@@ -4,7 +4,8 @@ This section covers techniques for selecting the best model and improving perfor
 
 ## 📌 Techniques Covered  
 - **XGBoost**  
-- **Grid Search & Random Search for Hyperparameter Tuning**  
+- **Grid Search for Hyperparameter Tuning**
+- k fold cross validation
 
 ## 📌 Applications  
 - Selecting the best model for a given dataset.  
@@ -20,6 +21,7 @@ This section covers techniques for selecting the best model and improving perfor
    ```bash
    python xgboost.py
    python hyperparameter_tuning.py
+   python  k_fold_cross_validation.py
    ```
 3. **Compare model performance and analyze results.**  
 
