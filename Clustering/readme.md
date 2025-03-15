@@ -16,10 +16,31 @@ This folder contains implementations of different clustering algorithms:
 - **Implementation:** Located in `Clustering/Hierarchical/`
 - **Dataset Used:** `Mall_Customers.csv`
 
-## 📌 How to Use
-Each clustering algorithm has its own Python script and dataset inside its respective subfolder. You can run the scripts to see how the data is grouped into clusters.
+📌 Running the Algorithms
+1️⃣ Navigate to the Clustering folder
+bash
+Copy
+Edit
+cd Clustering
+2️⃣ Run the Python script for the clustering method
+bash
+Copy
+Edit
+python kmeans.py       # Runs K-Means Clustering
+python hierarchical.py  # Runs Hierarchical Clustering
+3️⃣ Observe the results
+Elbow method (for K-Means) helps find the optimal number of clusters.
+Dendrograms (for Hierarchical Clustering) visualize the cluster merging process.
+📌 Requirements
+Ensure you have the following Python libraries installed before running the scripts:
 
-### Running a Clustering Algorithm:
-1. **Navigate to the specific clustering subfolder**  
-   ```bash
-   cd Clustering/K_Means
+bash
+Copy
+Edit
+pip install numpy pandas matplotlib sklearn scipy
+✉️ Contributions & Issues
+Feel free to submit a pull request if you have improvements.
+If you find any issues, create a GitHub issue describing the problem.
+🚀 Happy Clustering! 🚀
+
+
