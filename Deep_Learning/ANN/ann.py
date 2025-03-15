@@ -5,7 +5,7 @@ Created on Mon Feb  3 09:31:42 2025
 @author: swarnabhaghosh
 """
 
-# Artificial Neural Network (ANN)
+# Importing required libraries
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -14,38 +14,35 @@ from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
 
-# Set working directory
-os.chdir('/Users/swarnabhaghosh/Downloads/Machine Learning A-Z/Part 8 - Deep Learning/Section 39 - Artificial Neural Networks (ANN)/Python')
-
-# Importing the dataset
+# Set working directory (Ensure it works universally)
 file_path = "Churn_Modelling.csv"
 
+# Load dataset
 try:
-    if os.path.isfile(file_path):
-        dataset = pd.read_csv(file_path)
-        print("Data imported successfully!")
-        X = dataset.iloc[:, 3:13].values  # Selecting feature columns
-        y = dataset.iloc[:, 13].values   # Target variable
-
-    else:
-        print(f"File not found: {file_path}")
-
+    dataset = pd.read_csv(file_path)
+    print("✅ Data imported successfully!")
 except FileNotFoundError:
-    print(f"Error: File not found: {file_path}")
+    raise FileNotFoundError(f"❌ Error: File not found at {file_path}. Please check the path.")
 
-# Encoding categorical data
+# Selecting feature columns and target variable
+X = dataset.iloc[:, 3:13].values  
+y = dataset.iloc[:, 13].values   
+
+# Encoding categorical data (Geography & Gender)
 labelencoder_X_1 = LabelEncoder()
 X[:, 1] = labelencoder_X_1.fit_transform(X[:, 1])  # Encode 'Geography'
-
 labelencoder_X_2 = LabelEncoder()
 X[:, 2] = labelencoder_X_2.fit_transform(X[:, 2])  # Encode 'Gender'
 
-# One-Hot Encoding Geography (Column Index 1)
+# One-Hot Encoding 'Geography' column
 transformer = ColumnTransformer(transformers=[('one_hot', OneHotEncoder(), [1])], remainder='passthrough')
 X = transformer.fit_transform(X)
 
-# Avoiding the Dummy Variable Trap (Remove one column from OneHotEncoding)
+# Avoiding the Dummy Variable Trap (Removing first column)
 X = X[:, 1:]
 
 # Splitting the dataset into Training and Test sets
@@ -56,20 +53,15 @@ sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
 
-# Import Keras
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Dropout
-
 # Initializing the ANN
 classifier = Sequential()
 
 # Input Layer & First Hidden Layer
-classifier.add(Dense(units=6, activation='relu', kernel_initializer='he_uniform', input_shape=(X_train.shape[1],)))
-classifier.add(Dropout(0.1))  # Dropout to reduce overfitting
+classifier.add(Dense(units=6, activation='relu', kernel_initializer='glorot_uniform', input_shape=(X_train.shape[1],)))
+classifier.add(Dropout(0.1))  # Regularization to prevent overfitting
 
 # Second Hidden Layer
-classifier.add(Dense(units=6, activation='relu', kernel_initializer='he_uniform'))
+classifier.add(Dense(units=6, activation='relu', kernel_initializer='glorot_uniform'))
 classifier.add(Dropout(0.1))
 
 # Output Layer
@@ -86,9 +78,9 @@ y_pred = (classifier.predict(X_test) > 0.5)
 
 # Model Evaluation
 cm = confusion_matrix(y_test, y_pred)
-print("Confusion Matrix:\n", cm)
-print("\nClassification Report:\n", classification_report(y_test, y_pred))
+print("\n✅ Confusion Matrix:\n", cm)
+print("\n✅ Classification Report:\n", classification_report(y_test, y_pred))
 
 # Save the model
 classifier.save("ann_model.h5")
-print("Model saved successfully!")
+print("\n✅ Model saved successfully as ann_model.h5!")
